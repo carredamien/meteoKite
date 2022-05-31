@@ -1,0 +1,60 @@
+// btn-checkbox
+%btn-checkbox {
+  // .container{
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   height: 70vh;
+  // }
+  .form-check{
+    --border: #d1d5db;
+    --cursor: #89909E;
+    --checked: #1771e6;
+    --checked-cursor: #fff;
+    position: relative;
+  }
+  .form-check input{
+    position: absolute;
+    opacity:0;
+  }
+
+  .form-check label{
+    display: grid;
+    grid-template-columns: 2em 1fr;
+    grid-template-areas: "checkbox label";
+    gap:.7em;
+  }
+  .form-check label::before,
+  .form-check label::after{
+    grid-area: checkbox;
+    display: block;
+    content:'';
+    margin-top: .1em;
+  }
+  .form-check label::before{
+    height: 1em;
+    width: 100%;
+    border: solid 1px var(--border);
+    border-radius: 1em;
+    transition: background-color .3s, border-color .3s, box-shadow .3s;
+  }
+  .form-check label::after{
+    position: relative;
+    top: 2px;
+    left: 2px;
+    width: calc(1em - 2px);
+    height:calc(1em - 2px);
+    background-color: var(--cursor);
+    border-radius:50%;
+    transition: background-color .3s, transform .3s;
+  }
+  .form-check input:checked + label::before{
+    background-color: var(--checked);
+    border-color: var(--checked);
+  }
+  .form-check input:checked + label::after{
+    background-color: var(--checked-cursor);
+    transform: translateX(1em);
+  }
+
+}

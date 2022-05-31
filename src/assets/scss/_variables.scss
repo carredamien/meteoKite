@@ -1,0 +1,35 @@
+// colors
+
+:root {
+
+  //colors
+  --primary: ;
+  --secondary: ;
+  --bg-primary: radial-gradient(circle at 85% 40%, hsla(190,0%,93%,0.05) 0%, hsla(190,0%,93%,0.05) 96%,transparent 96%, transparent 100%),radial-gradient(circle at 14% 15%, hsla(190,0%,93%,0.05) 0%, hsla(190,0%,93%,0.05) 1%,transparent 1%, transparent 100%),radial-gradient(circle at 60% 90%, hsla(190,0%,93%,0.05) 0%, hsla(190,0%,93%,0.05) 20%,transparent 20%, transparent 100%),radial-gradient(circle at 79% 7%, hsla(190,0%,93%,0.05) 0%, hsla(190,0%,93%,0.05) 78%,transparent 78%, transparent 100%),radial-gradient(circle at 55% 65%, hsla(190,0%,93%,0.05) 0%, hsla(190,0%,93%,0.05) 52%,transparent 52%, transparent 100%),linear-gradient(340deg, rgb(37,130,222),rgb(96, 189, 244));
+  --bg-secondary: ;
+  --text-dark: black;
+  --text-white: #ffff;
+  //font-family
+    // $ffp:;
+
+  //font-size
+
+  --fs-h1-d:3rem;
+  --fs-h1-t:2.5rem;
+  --fs-h1-m:1.8rem;
+  --fs-h2-d:2.8rem;
+  --fs-h2-t:2.3rem;
+  --fs-h2-m:2rem;
+  --fs-h3-d:2.6rem;
+  --fs-h3-t:2.3rem;
+  --fs-h3-m:1.8rem;
+  --fs-p-d:2rem;
+  --fs-p-t:1.7rem;
+  --fs-p-m:1.5rem;
+
+  //padding & margin
+
+  --padding-default: 1rem;
+  --margin-default: 1rem;
+
+}
