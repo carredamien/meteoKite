@@ -1,25 +1,27 @@
 <template>
   <article class="meteo">
     <div class="bloc-logo" >
-      <!-- <img :src="`../img/jour/.${meteoDay}.weather.${icon}.svg`" alt="logo du temps qu'il fait" class="logo-meteo"> -->
+      <img :src="`/img/${getWeatherData.icon}.svg`" alt="logo du temps qu'il fait" class="logo-meteo">
     </div>
-    <div class="bloc-info">
-       <p class="localisation" >{{ this.$store.state.city }}</p>
+    <div class="bloc-info" v-if="this.$store.state.search.length > 3">
+       <p class="localisation" >{{ this.$store.state.search.toUpperCase()}}</p>
+       <p> {{ getWeatherData.temp }}°</p>
      <!-- <p class="localisation noLocation">{{ meteoToday }}</p> -->
-      <!-- <p class="temps">{{ meteoDay.weather[0].description }}</p> -->
+      <p class="temps">{{ getWeatherData.description }}</p>
       <!-- <p class="temperature"><span>{{ meteoDay.main.temp }}°</span></p> -->
     </div>
+    <div class="error" v-if="getError">Désolé, il n'y a pas de résultats.</div>
   </article>
   <aside>
-    <div class="conditions">
+    <div class="conditions"  v-if="search">
       <h2>Conditions actuelles</h2>
       <div class="wrapper--conditionWind">
         <img src="../img/wind.svg" alt="logo du vent">
         <div class="conditionWind">
 
           <!-- <p>moyen: {{showWind}}km/h</p> -->
-          <p>min: 12 noeuds</p>
-          <p>max: 20 noeuds</p>
+          <p>moy: {{ getWeatherData.wind }} noeuds</p>
+          
         </div>
         <img class="compass" src="../img/Compass.svg" alt="Boussole">
         <!-- <p>vent= {{this.meteoToday.wind.speed}}km/h</p>
@@ -27,11 +29,11 @@
       </div>
 
     </div>
-    <div class="sports">
+    <div class="sports"  >
       <h2>Sports</h2>
-      <ul>
-        <li>Kitesurf <img src="../img/HandUp.svg" alt="Pouce levé: ok">
-           </li>
+      <ul >
+        <li v-if="getWeatherData.wind > 10" >Kitesurf: <img src="../img/HandUp.svg" alt="Pouce levé: ok"></li>
+        <li v-if="getWeatherData.wind <= 9" >Paddle: <img src="../img/HandUp.svg" alt="Pouce levé: ok"></li>
       </ul>
     </div>
   
@@ -39,81 +41,23 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import { mapGetters } from "vuex";
 export default {
   name: "MeteoOfDay",
   data() {
     return {
-      lat: '',
-      lon:'',
-  
 
-      // noLocation: false,
-      // position:{
-        //   latitude: null,
-      //   longitude: null
-      // }, 
-      // icon:null,
-      // temp:null,
-      // tempMin:null,
-      // tempMax:null,
-      // pressure:null,
-      // wind:null,
-      // deg:null,
-      // humidity:null,
-      // description:null,
     };
   },
-  props: ['name','city','meteoDay'],
+  
 
   methods:{
-    // showPosition(position){
-    //   var vm = this
-    //   vm.position.latitude = position.coords.latitude
-    //   vm.position.longitude = position.coords.longitude
-    //   console.log(vm.position.latitude);
-    // },
-    test(){
-      console.log(this.meteoDay);
-      console.log(this.meteoDay.name);
-    },
-    showWind(){
-      return this.meteoToday.wind.speed * 1.852;
-    },
+ 
   },
-  // mounted(){
-  //   if("geolocation" in navigator) {
-  //     navigator.geolocation.watchPosition((position) => { 
-  //       this.lat = position.coords.latitude;
-  //       this.lon = position.coords.latitude;
-  //       axios
-  //       .get(`https://api.openweathermap.org/data/2.5/weather?lat=${this.lat}&lon=${this.lon}&appid=2b1d940e98362d0725b60eb9bcaf3f88&lang="fr"&units="metric"`)
-  //       .then(res => {
-  //         console.log(res.data);
-  //         this.meteoDay = res.data;
-  //       })
-  //     });
-  //   }
-  // }
-  
-  
-    
-    
-    //   choiceCity () {
-    //     if("geolocation" in navigator) {
-    //       navigator.geolocation.watchPosition((position) => { 
-    //           console.log(this.latitude);
-    //           // console.log(this.longitude);
-    //       });
+  computed: {
+    ...mapGetters(["getWeatherData","getError"])
+  }
 
-
-    //     }
-    //     else { 
-    //       this.city = 'Vauvert';
-
-    //     }
-    //   }
-    // },
   }
 </script>
 
@@ -198,8 +142,9 @@ aside {
     
   }
 }
-.nolocation{
-  color: orange;
-  font-size: 1.5rem;
+
+.error {
+  color: #ff4700;
+  font-size: 1.8rem;
 }
 </style>

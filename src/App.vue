@@ -27,7 +27,7 @@ html {
   height: 100vh;
   grid-template-columns: 1fr;
     @include lg { 
-      grid-template-columns: 50rem;
+      grid-template-columns: 40rem;
       justify-content: center;
     }
 
