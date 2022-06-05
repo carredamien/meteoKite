@@ -3,12 +3,20 @@
 </template>
 <script>
 import Home from './views/Home.vue';
+import { mapGetters } from "vuex";
 
   export default {
     name:"App",
     components: {
       Home
     },
+    data() {
+      
+      },
+     computed: {
+    ...mapGetters(["getWeatherData","getError"]),
+  
+  }
   }
 </script>
 <style lang="scss">
@@ -34,9 +42,10 @@ html {
   grid-template-rows: 10rem 1fr 10rem;
   gap:0.5rem;
   padding: 0 var(--padding-default);
-  background: var(--bg-primary);
+  // background: var(--bg-primary);
+  background:var(--bg-primary), url('../src/img/clouds.jpg') no-repeat top center;
 }
-
+// var(--bg-primary), 
 
 
 main {

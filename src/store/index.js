@@ -11,25 +11,34 @@ export default createStore({
     search:'',
     weatherData: {},
     isError: false,
+    lat:'',
+    lon:'',
   },
 
   getters: {
     getError(state) {
       return state.isError;
     },
+  
     isSearched(state) {
       return state.search !== "";
     },
     getWeatherData(state) {
-      const { temp, feelsLike, description, icon, info, wind } = state.weatherData;
-      console.log(icon);
+      const { temp,tempMin, tempMax, feelsLike, description, icon,main, info, windSpeed, windSpeedGust, windDeg, lat, lon } = state.weatherData;
       return {
         temp,
+        tempMin,
+        tempMax,
         feelsLike,
         description,
+        main,
         info,
         icon,
-        wind,
+        windSpeed,
+        windSpeedGust,
+        windDeg,
+        lat,
+        lon,
       };
       
     },
@@ -42,6 +51,10 @@ export default createStore({
     },
     ["SET_WEATHER_DATA"](state, data) {
       state.weatherData = data;
+    },
+    ["SET_LOCATION"](state, lat, lon) {
+      state.lat = lat;
+      state.lon = lon;
     },
     ["SET_ERROR"](state, value) {
       state.isError = value;
@@ -57,8 +70,8 @@ export default createStore({
         commit("SET_SEARCH", search);
       try {
          const response = await axios
-            .get(`${state.apiBase}weather?q=${search}&lang=fr&units=metric&appid=${state.apiCode}`);
-          
+            .get(`${state.apiBase}weather?q=${search}&lang=fr&units=metric&appid=${state.apiCode}`)
+            
         const newWeatherData = {
           name: response.data.name,
           temp: response.data.main.temp,
@@ -66,13 +79,18 @@ export default createStore({
           tempMax: response.data.main.temp_max,
           feelsLike: response.data.main.feels_like,
           description: response.data.weather[0].description,
+          main: response.data.weather[0].main,
           icon: response.data.weather[0].icon.substring(0, 3),
           info: response.data.weather[0].main,
-          wind: response.data.wind.speed,
+          windSpeed: response.data.wind.speed,
+          windSpeedGust: response.data.wind.gust,
+          windDeg: response.data.wind.deg,
           humidity: response.data.main.humidity,
           clouds: response.data.clouds.all,
           country: response.data.sys.country,
         };   
+
+        
         commit("SET_WEATHER_DATA", newWeatherData);
         commit("SET_ERROR", false);
       } catch (error) {
@@ -81,16 +99,41 @@ export default createStore({
       } 
     
     
-    }      
-  // }
+    },
+    async weatherDataLocation({ commit, state }, lat, lon){
+      
+      commit("SET_LOCATION", lat, lon);
+    try {
+       const response = await axios
+          .get(`${state.apiBase}weather?lat=${lat}&lon=${lon}&lang=fr&units=metric&appid=${state.apiCode}`)
           
-    //   catch (error) {
-    //     console.log(error);
-    //     commit("SET_ERROR", true);
-    //     commit("SET_WEATHER_DATA", {});
-    //   }
-    // }
- 
+      const newWeatherData = {
+        name: response.data.name,
+        temp: response.data.main.temp,
+        tempMin: response.data.main.temp_min,
+        tempMax: response.data.main.temp_max,
+        feelsLike: response.data.main.feels_like,
+        description: response.data.weather[0].description,
+        main: response.data.weather[0].main,
+        icon: response.data.weather[0].icon.substring(0, 3),
+        info: response.data.weather[0].main,
+        windSpeed: response.data.wind.speed,
+        windSpeedGust: response.data.wind.gust,
+        windDeg: response.data.wind.deg,
+        humidity: response.data.main.humidity,
+        clouds: response.data.clouds.all,
+        country: response.data.sys.country,
+      };   
+
+      
+      commit("SET_WEATHER_DATA", newWeatherData);
+      commit("SET_ERROR", false);
+    }catch (error) {
+      commit("SET_ERROR", true);
+      commit("SET_WEATHER_DATA", {});
+    } 
+  
+    },   
   },
   modules: {
   }
